@@ -33,11 +33,29 @@ function addTransactionDOM(transaction) {
     lista.appendChild(item);
 }
 
+
+// Actalizar balance, entradas y salidaas
+function updateValues() {
+    const cantidades = transactions.map(transaction => transaction.amount);
+    const total = cantidades.reduce((acc, item) => (acc += item), 0).toFixed(2);
+    const entradas = cantidades
+        .filter(item => item > 0)
+        .reduce((acc, item) => (acc += item), 0)
+        .toFixed(2);
+    const gastos = (cantidades.filter(item => item < 0).reduce((acc, item) => (acc += item), 0)
+        *
+        -1
+    ).toFixed(2);
+    balance.innerHTML = `$${total}`;
+    moneyPlus.innerText = `${entradas}`;
+    moneyMinus.innerHTML = `${gastos}`;
+}
 // init
 
 function init() {
     lista.innerHTML = '';
     transactions.forEach(addTransactionDOM);
+    updateValues();
 }
 
 init();
