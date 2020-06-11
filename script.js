@@ -6,15 +6,17 @@ const form = document.getElementById('form');
 const texto = document.getElementById('text');
 const cantidad = document.getElementById('amount');
 
-const dummytransacciones = [
-    { id: 1, text: 'Flores', cantidad: -20 },
-    { id: 2, text: 'Salario', cantidad: 300 },
-    { id: 3, text: 'Libro', cantidad: -10 },
-    { id: 4, text: 'Camara', cantidad: 150 },
-];
+// const dummytransacciones = [
+//     { id: 1, text: 'Flores', cantidad: -20 },
+//     { id: 2, text: 'Salario', cantidad: 300 },
+//     { id: 3, text: 'Libro', cantidad: -10 },
+//     { id: 4, text: 'Camara', cantidad: 150 },
+// ];
 
-let transacciones = dummytransacciones;
+// let transacciones = dummytransacciones;
 
+const localStorageTransacciones = JSON.parse(localStorage.getItem('transacciones'));
+let transacciones = JSON.parse(localStorage.getItem('transacciones')) !== null ? JSON.parse(localStorage.getItem('transacciones')) : [];
 
 function addtransaccion(e) {
     e.preventDefault();
@@ -32,6 +34,7 @@ function addtransaccion(e) {
         texto.value = '';
         cantidad.value = '';
     }
+    updateLocalStorage();
 }
 
 // Generar ID random
@@ -60,6 +63,7 @@ function addtransaccionDOM(transaccion) {
 // Remover transaccion 
 function removerTransaccion(id) {
     transacciones = transacciones.filter(transaccion => transaccion.id !== id);
+    localStorage.setItem('transacciones', JSON.stringify(transacciones));
     init();
 }
 
@@ -79,6 +83,12 @@ function updateValues() {
     moneyPlus.innerText = `$${entradas}`;
     moneyMinus.innerHTML = `$${gastos}`;
 }
+
+// Actualizar localStorage
+function updateLocalStorage() {
+    localStorage.setItem('transacciones', JSON.stringify(transacciones));
+}
+
 // init
 
 function init() {
